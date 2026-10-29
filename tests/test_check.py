@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, MagicMock
 from scripts.check import validate_url, check
 
 class ValidationTests(unittest.TestCase):
@@ -15,10 +15,9 @@ class ValidationTests(unittest.TestCase):
             with self.subTest(url=url):
                 self.assertFalse(validate_url(url))
     def test_online(self):
-        response = Mock()
+        response = MagicMock()
         response.status = 200
-        response.__enter__ = Mock(return_value=response)
-        response.__exit__ = Mock(return_value=None)
+        response.__enter__.return_value = response
         opener = Mock()
         opener.open.return_value = response
         result = check({"name": "Example", "url": "https://example.onrender.com"}, opener=opener)
