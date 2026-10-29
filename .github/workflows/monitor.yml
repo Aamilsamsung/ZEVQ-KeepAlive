@@ -20,18 +20,29 @@ jobs:
         run: python3 -m unittest discover -s tests -v
       - name: Run keep-alive only when enabled
         run: python3 scripts/check.py
-      - name: Commit snapshot
+      - name: Commit snapshot with branch-race recovery
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name "zevq-monitor[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add status.json
-          if ! git diff --cached --quiet; then
+          cp status.json /tmp/zevq-status.json
+          for attempt in $(seq 1 10); do
+            git fetch origin main
+            git checkout -B main origin/main
+            cp /tmp/zevq-status.json status.json
+            git add status.json
+            if git diff --cached --quiet; then
+              echo "Snapshot already current"
+              exit 0
+            fi
             git commit -m "chore: update service status [skip ci]"
-            for attempt in 1 2 3 4 5; do
-              git pull --rebase origin main
-              if git push origin HEAD:main; then exit 0; fi
-              sleep $((attempt * 2))
-            done
-            echo 'Unable to push monitoring snapshot after retries' >&2
-            exit 1
-          fi
+            if git push origin HEAD:main; then
+              echo "Snapshot saved"
+              exit 0
+            fi
+            echo "Concurrent branch update; retrying $attempt/10"
+            sleep $((attempt * 2))
+          done
+          echo "Unable to push snapshot after 10 attempts" >&2
+          exit 1
