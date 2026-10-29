@@ -1,5 +1,7 @@
 name: Monitor Render services
 on:
+  schedule:
+    - cron: '*/10 * * * *'
   workflow_dispatch:
 permissions:
   contents: write
@@ -16,7 +18,7 @@ jobs:
           persist-credentials: true
       - name: Validate checker unit tests
         run: python3 -m unittest discover -s tests -v
-      - name: Run health checks and update public status snapshot
+      - name: Run keep-alive only when enabled
         run: python3 scripts/check.py
       - name: Commit snapshot
         run: |
