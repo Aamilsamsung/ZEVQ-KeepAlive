@@ -52,7 +52,7 @@ def check(monitor, opener=None, now=None):
     started = time.monotonic()
     try:
         request = urllib.request.Request(url, headers={"User-Agent": "ZEVQ-KeepAlive/1.0"})
-        with opener.open(request, timeout=25) as response:
+        with opener.open(request, timeout=75) as response:
             code = response.status
         result["status"] = "online" if 200 <= code < 400 else "offline"
         result["httpStatus"] = code
