@@ -76,6 +76,10 @@ def main():
         previous = json.loads(status_file.read_text(encoding="utf-8"))
     except (FileNotFoundError, json.JSONDecodeError):
         previous = {}
+    state = json.loads((ROOT / "keepalive.json").read_text(encoding="utf-8"))
+    if state.get("enabled") is not True:
+        print("KeepAlive disabled; no requests sent")
+        return
     timestamp = datetime.now(timezone.utc).isoformat()
     results = [check(m, now=timestamp) for m in config[:30] if isinstance(m, dict)]
     for result in results:
