@@ -57,7 +57,7 @@ def check(monitor, opener=None, now=None):
         result["status"] = "online" if 200 <= code < 400 else "offline"
         result["httpStatus"] = code
     except urllib.error.HTTPError as error:
-        result["status"] = "offline"
+        result["status"] = "online" if 300 <= error.code < 400 else "offline"
         result["httpStatus"] = error.code
     except (urllib.error.URLError, TimeoutError, OSError):
         result["status"] = "offline"
