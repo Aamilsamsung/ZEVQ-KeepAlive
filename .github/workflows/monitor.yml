@@ -11,7 +11,7 @@ concurrency:
 jobs:
   monitor:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -27,6 +27,11 @@ jobs:
           git add status.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: update service status [skip ci]"
-            git pull --rebase origin main
-            git push origin HEAD:main
+            for attempt in 1 2 3 4 5; do
+              git pull --rebase origin main
+              if git push origin HEAD:main; then exit 0; fi
+              sleep $((attempt * 2))
+            done
+            echo 'Unable to push monitoring snapshot after retries' >&2
+            exit 1
           fi
