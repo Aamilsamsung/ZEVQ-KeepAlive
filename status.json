@@ -1,5 +1,60 @@
 {
-  "updatedAt": null,
-  "services": [],
-  "history": []
+  "updatedAt": "2026-10-29T17:01:18.997790+00:00",
+  "services": [
+    {
+      "name": "RoastAI Frontend",
+      "url": "https://roastai-frontend.onrender.com/",
+      "status": "online",
+      "httpStatus": 200,
+      "latencyMs": 218,
+      "checkedAt": "2026-10-29T17:01:18.997790+00:00"
+    },
+    {
+      "name": "RoastAI Backend",
+      "url": "https://roastai-backend-ir7y.onrender.com/",
+      "status": "online",
+      "httpStatus": 200,
+      "latencyMs": 186,
+      "checkedAt": "2026-10-29T17:01:18.997790+00:00"
+    },
+    {
+      "name": "ZEVQ Preflight",
+      "url": "https://zevq-preflight-staging.onrender.com/",
+      "status": "offline",
+      "httpStatus": 303,
+      "latencyMs": 375,
+      "checkedAt": "2026-10-29T17:01:18.997790+00:00"
+    }
+  ],
+  "history": [
+    {
+      "timestamp": "2026-10-29T17:01:18.997790+00:00",
+      "services": [
+        {
+          "name": "RoastAI Frontend",
+          "url": "https://roastai-frontend.onrender.com/",
+          "status": "online",
+          "httpStatus": 200,
+          "latencyMs": 218,
+          "checkedAt": "2026-10-29T17:01:18.997790+00:00"
+        },
+        {
+          "name": "RoastAI Backend",
+          "url": "https://roastai-backend-ir7y.onrender.com/",
+          "status": "online",
+          "httpStatus": 200,
+          "latencyMs": 186,
+          "checkedAt": "2026-10-29T17:01:18.997790+00:00"
+        },
+        {
+          "name": "ZEVQ Preflight",
+          "url": "https://zevq-preflight-staging.onrender.com/",
+          "status": "offline",
+          "httpStatus": 303,
+          "latencyMs": 375,
+          "checkedAt": "2026-10-29T17:01:18.997790+00:00"
+        }
+      ]
+    }
+  ]
 }
