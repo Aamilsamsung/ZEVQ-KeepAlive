@@ -45,6 +45,7 @@ def check(monitor, opener=None, now=None):
         "httpStatus": None,
         "latencyMs": None,
         "keepAliveSent": False,
+        "error": None,
         "checkedAt": timestamp,
     }
     if not validate_url(url):
@@ -61,8 +62,9 @@ def check(monitor, opener=None, now=None):
     except urllib.error.HTTPError as error:
         result["status"] = "online" if 300 <= error.code < 400 else "offline"
         result["httpStatus"] = error.code
-    except (urllib.error.URLError, TimeoutError, OSError):
+    except (urllib.error.URLError, TimeoutError, OSError) as error:
         result["status"] = "offline"
+        result["error"] = (type(error).__name__ + ": " + str(error))[:240]
     result["latencyMs"] = round((time.monotonic() - started) * 1000)
     return result
 
@@ -83,7 +85,7 @@ def main():
     timestamp = datetime.now(timezone.utc).isoformat()
     results = [check(m, now=timestamp) for m in config[:30] if isinstance(m, dict)]
     for result in results:
-        print(result["name"], result["status"], result["latencyMs"])
+        print(result["name"], result["status"], result["latencyMs"], result.get("error") or "")
     history = previous.get("history", [])
     if not isinstance(history, list):
         history = []
