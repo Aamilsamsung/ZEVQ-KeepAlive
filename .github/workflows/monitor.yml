@@ -18,6 +18,8 @@ jobs:
           persist-credentials: true
       - name: Validate checker unit tests
         run: python3 -m unittest discover -s tests -v
+      - name: Validate API authorization and input security
+        run: node --test tests/keepalive-api.test.js
       - name: Run keep-alive only when enabled
         run: python3 scripts/check.py
       - name: Commit snapshot with branch-race recovery
