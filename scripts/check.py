@@ -1,4 +1,4 @@
-"""ZEVQ KeepAlive scheduled public endpoint checker."""
+"""ZEVQ KeepAlive: actively request public Render endpoints to reduce idle sleep."""
 import json
 import pathlib
 import time
@@ -44,14 +44,16 @@ def check(monitor, opener=None, now=None):
         "status": "invalid",
         "httpStatus": None,
         "latencyMs": None,
+        "keepAliveSent": False,
         "checkedAt": timestamp,
     }
     if not validate_url(url):
         return result
     opener = opener or urllib.request.build_opener(NoRedirect())
+    result["keepAliveSent"] = True
     started = time.monotonic()
     try:
-        request = urllib.request.Request(url, headers={"User-Agent": "ZEVQ-KeepAlive/1.0"})
+        request = urllib.request.Request(url, headers={"User-Agent": "ZEVQ-KeepAlive/1.0", "Cache-Control": "no-cache"})
         with opener.open(request, timeout=75) as response:
             code = response.status
         result["status"] = "online" if 200 <= code < 400 else "offline"
