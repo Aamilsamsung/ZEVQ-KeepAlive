@@ -1,32 +1,30 @@
-name: Check Render services
+name: Monitor Render services
 on:
   schedule:
     - cron: '*/10 * * * *'
   workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: monitoring
+  cancel-in-progress: false
 jobs:
-  check:
+  monitor:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 5
     steps:
-      - name: Check configured public Render URLs
-        env:
-          MONITOR_URLS: ${{ secrets.MONITOR_URLS }}
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: true
+      - name: Run health checks and update public status snapshot
+        run: python3 scripts/check.py
+      - name: Commit snapshot
         run: |
-          python3 - <<'PY'
-          import json, os, urllib.request, urllib.parse, time
-          urls=json.loads(os.environ.get('MONITOR_URLS') or '[]')
-          if not isinstance(urls,list): raise SystemExit('MONITOR_URLS must be a JSON array')
-          class NoRedirect(urllib.request.HTTPRedirectHandler):
-              def redirect_request(self,*args,**kwargs): return None
-          opener=urllib.request.build_opener(NoRedirect())
-          for url in urls[:30]:
-              p=urllib.parse.urlsplit(url)
-              if p.scheme!='https' or not p.hostname or not p.hostname.endswith('.onrender.com') or p.username or p.password or p.port not in (None,443):
-                  print('Skipped invalid URL'); continue
-              try:
-                  start=time.monotonic()
-                  with opener.open(urllib.request.Request(url,headers={'User-Agent':'ZEVQ-KeepAlive/1.0'}),timeout=20) as response:
-                      print(p.hostname,response.status,round((time.monotonic()-start)*1000),'ms')
-              except Exception as error:
-                  print(p.hostname,'FAILED',str(error)[:120])
-          PY
+          git config user.name "zevq-monitor[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add status.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update service status [skip ci]"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
