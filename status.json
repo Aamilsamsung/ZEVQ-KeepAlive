@@ -1,35 +1,35 @@
 {
-  "updatedAt": "2026-10-29T22:40:54.790177+00:00",
+  "updatedAt": "2026-10-30T02:09:36.006646+00:00",
   "services": [
     {
       "name": "RoastAI Frontend",
       "url": "https://roastai-frontend.onrender.com/",
       "status": "online",
       "httpStatus": 200,
-      "latencyMs": 21357,
+      "latencyMs": 21505,
       "keepAliveSent": true,
       "error": null,
-      "checkedAt": "2026-10-29T22:40:54.790177+00:00"
+      "checkedAt": "2026-10-30T02:09:36.006646+00:00"
     },
     {
       "name": "RoastAI Backend",
       "url": "https://roastai-backend-ir7y.onrender.com/",
       "status": "online",
       "httpStatus": 200,
-      "latencyMs": 31424,
+      "latencyMs": 41607,
       "keepAliveSent": true,
       "error": null,
-      "checkedAt": "2026-10-29T22:40:54.790177+00:00"
+      "checkedAt": "2026-10-30T02:09:36.006646+00:00"
     },
     {
       "name": "ZEVQ Preflight",
       "url": "https://zevq-preflight-staging.onrender.com/",
       "status": "online",
       "httpStatus": 303,
-      "latencyMs": 42703,
+      "latencyMs": 42759,
       "keepAliveSent": true,
       "error": null,
-      "checkedAt": "2026-10-29T22:40:54.790177+00:00"
+      "checkedAt": "2026-10-30T02:09:36.006646+00:00"
     }
   ],
   "history": [
@@ -129,6 +129,41 @@
           "keepAliveSent": true,
           "error": null,
           "checkedAt": "2026-10-29T22:40:54.790177+00:00"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-10-30T02:09:36.006646+00:00",
+      "services": [
+        {
+          "name": "RoastAI Frontend",
+          "url": "https://roastai-frontend.onrender.com/",
+          "status": "online",
+          "httpStatus": 200,
+          "latencyMs": 21505,
+          "keepAliveSent": true,
+          "error": null,
+          "checkedAt": "2026-10-30T02:09:36.006646+00:00"
+        },
+        {
+          "name": "RoastAI Backend",
+          "url": "https://roastai-backend-ir7y.onrender.com/",
+          "status": "online",
+          "httpStatus": 200,
+          "latencyMs": 41607,
+          "keepAliveSent": true,
+          "error": null,
+          "checkedAt": "2026-10-30T02:09:36.006646+00:00"
+        },
+        {
+          "name": "ZEVQ Preflight",
+          "url": "https://zevq-preflight-staging.onrender.com/",
+          "status": "online",
+          "httpStatus": 303,
+          "latencyMs": 42759,
+          "keepAliveSent": true,
+          "error": null,
+          "checkedAt": "2026-10-30T02:09:36.006646+00:00"
         }
       ]
     }
